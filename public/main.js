@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // DOM with fetched articles
     function displayArticles(articles) {
         articlesContainer.innerHTML = '';
-        articles.slice(0,5).forEach((article, index) => {
+        articles.slice(0,20).forEach((article, index) => {
             const articleDiv = document.createElement('div');
             articleDiv.className = 'article';
             articleDiv.innerHTML = `
