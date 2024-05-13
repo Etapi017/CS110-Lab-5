@@ -1,7 +1,24 @@
+//main.js begins
 document.addEventListener('DOMContentLoaded', function() {
     const articlesContainer = document.querySelector('.article-container');
     const apiKey = 'KtdAxMvdsmo0lF65Qj2i8QRfUUBgJINf';
     const baseUrl = 'https://api.nytimes.com/svc/mostpopular/v2/';
+
+    // Add search field above radio buttons
+    const searchInput = document.createElement('input');
+    searchInput.type = 'number';
+    searchInput.id = 'searchField';
+    searchInput.placeholder = 'Enter a number...';
+    const sidebar = document.querySelector('.sidebar');
+    sidebar.insertBefore(searchInput, sidebar.firstChild);
+
+    // Event listener for the search input field
+    searchInput.addEventListener('input', function(event) {
+        const value = parseInt(event.target.value, 10);
+        if (value > 15) {
+            alert('Number is higher than 15');
+        }
+    });
 
     // Fetch and display articles
     function loadArticles(type, period) {
@@ -14,7 +31,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json();
             })
             .then(data => displayArticles(data.results))
-            .catch(error => console.error('Error fetching data:', error));
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                displayError();
+            });
+    }
+
+    function updateTitle(type, period) {
+        const typeText = type === 'mostViewed' ? 'Most Viewed' : type === 'mostShared' ? 'Most Shared' : 'Most Emailed';
+        const periodText = period === '1' ? 'Day' : period === '7' ? 'Week' : '30' ? 'Month' : 'Timeframe Error';
+        const titleElement = document.getElementById('title');
+        if (titleElement) {
+            titleElement.textContent = `${typeText} - ${periodText}`;
+        } else {
+            console.error('Title element not found');
+        }
+    }
+
+    // Display error for articles
+    function displayError() {
+        articlesContainer.innerHTML = '<div class="article"><h1>Article not available</h1><p>Error fetching article.</p></div>';
     }
 
     // URL for the API request
@@ -28,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // DOM with fetched articles
     function displayArticles(articles) {
         articlesContainer.innerHTML = '';
-        articles.slice(0,20).forEach((article, index) => {
+        articles.slice(0,15).forEach((article, index) => {
             const articleDiv = document.createElement('div');
             articleDiv.className = 'article';
             articleDiv.innerHTML = `
@@ -45,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Function to get the article image URL
+    // Function to get the article image URL or a placeholder if unavailable
     function getArticleImageUrl(article) {
         return article.media && article.media.length > 0 && article.media[0]['media-metadata'] ?
                article.media[0]['media-metadata'][0].url : 'placeholder.jpg';
@@ -59,6 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
             loadArticles(sortType, period);
         });
     });
-    
+
     loadArticles('mostViewed', '1');
 });
+//main.js ends

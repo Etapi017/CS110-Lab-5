@@ -1,9 +1,26 @@
-import React from 'react';
+// Sidebar.js
+import React, { useState } from 'react';
 import styles from './Sidebar.module.css';
 
 function Sidebar() {
+    const [searchValue, setSearchValue] = useState('');
+
+    const handleSearchChange = (e) => {
+        const value = e.target.value;
+        setSearchValue(value);
+        if (parseInt(value) > 15) {
+            alert("number is higher than 15");
+        }
+    };
+
     return (
         <div className={styles.sidebar}>
+            <input
+                type="text"
+                value={searchValue}
+                onChange={handleSearchChange}
+                placeholder="Search by number..."
+            />
             <h2>Filter</h2>
             <div className={styles.filterSection}>
                 <p>Sort By:</p>
@@ -22,6 +39,7 @@ function Sidebar() {
                 <label htmlFor="week" className={styles.filterLabel}>Week</label><br />
                 <input type="radio" id="month" name="time" value="30" />
                 <label htmlFor="month" className={styles.filterLabel}>Month</label>
+
             </div>
         </div>
     );
