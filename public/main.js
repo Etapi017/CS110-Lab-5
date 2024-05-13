@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const apiKey = 'KtdAxMvdsmo0lF65Qj2i8QRfUUBgJINf';
     const baseUrl = 'https://api.nytimes.com/svc/mostpopular/v2/';
 
-    // Add search field above radio buttons
+    // Search field above radio buttons
     const searchInput = document.createElement('input');
     searchInput.type = 'number';
     searchInput.id = 'searchField';
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Fetch and display articles
+    // Fetches and displays articles
     function loadArticles(type, period) {
         const url = buildUrl(type, period);
         fetch(url)
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Display error for articles
+    // Displays error for articles
     function displayError() {
         articlesContainer.innerHTML = '<div class="article"><h1>Article not available</h1><p>Error fetching article.</p></div>';
     }
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Function to get the article image URL or a placeholder if unavailable
+    // Function to get the article image URL
     function getArticleImageUrl(article) {
         return article.media && article.media.length > 0 && article.media[0]['media-metadata'] ?
                article.media[0]['media-metadata'][0].url : 'placeholder.jpg';
